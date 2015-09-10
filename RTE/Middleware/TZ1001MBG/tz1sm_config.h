@@ -55,6 +55,7 @@
 #undef TZ1XXX_BOARD_REFERENCE_B
 #define TZ1XXX_BOARD_REFERENCE_X
 #undef TZ1XXX_BOARD_EXTERIOR_A
+#undef TZ1XXX_BOARD_EXTERIOR_H
 
 
 /*
@@ -68,11 +69,17 @@
 
 
 /*
+ * Define TWIC_BLE_HWIP_V41 if HWIP supports V4.1, otherwise disable it.
+ *
+ */
+#undef TWIC_BLE_HWIP_V41
+
+/*
  * Define TWIC_SCAN if the LE_Scan_Enable is used otherwise
  * disable it for saving memory (-2.5kB).
  *
  */
-#define TWIC_CONFIG_ENABLE_SCAN
+#undef TWIC_CONFIG_ENABLE_SCAN
 
 /*
  * TWIC_CONFIG_RX_BUFFER_SIZE
@@ -161,16 +168,16 @@
 #undef TWIC_API_LECEDBUSREAD
 #undef TWIC_API_LECEMEMORYWRITE
 #undef TWIC_API_LECEMEMORYREAD
-
+#undef TWIC_API_LECEXOSCTRIMING
 
 /*
  * GATT Based service utility definition.
  * Enable each Service if the Service Generator is used.
  */
 /* GA Service Descripter and Characteristic attribute data. */
-#define TWIC_UTIL_GA_SERVICE
+#undef TWIC_UTIL_GA_SERVICE
 /* DI Service Descripter and Characteristic attribute data. */
-#define TWIC_UTIL_DI_SERVICE
+#undef TWIC_UTIL_DI_SERVICE
 /* HR Service Descripter and Characteristic attribute data. */
 #undef TWIC_UTIL_HR_SERVICE
 /* Blood Pressure Service Descripter and Characteristic attribute data. */
@@ -252,7 +259,10 @@
 #elif defined(TZ1XXX_BOARD_REFERENCE_X) || defined(TZ1XXX_BOARD_EXTERIOR_A)
 
 #define TWIC_BUTTON_GPIO_NO (2)
-#define TWIC_BUTTON_GPIO_NO_BB (6)
+
+#elif defined(TZ1XXX_BOARD_EXTERIOR_H)
+
+#define TWIC_BUTTON_GPIO_NO (2)
 
 #endif
 
@@ -306,6 +316,14 @@
 #undef TWIC_LED_GPIO_LED4
 #undef TWIC_LED_GPIO_LED5
 
+#elif defined(TZ1XXX_BOARD_EXTERIOR_H)
+
+#undef TWIC_LED_GPIO_LED1
+#define TWIC_LED_GPIO_LED2 (10)
+#define TWIC_LED_GPIO_LED3 (11)
+#undef TWIC_LED_GPIO_LED4
+#undef TWIC_LED_GPIO_LED5
+
 #endif
 
 
@@ -334,14 +352,16 @@
 
 #if defined(TZ1XXX_BOARD_DEVELOPER_A)
 #define TWIC_DEBUG_UART_NUMBER (TWIC_DEBUG_UART_CH_0)
-#endif
 
-#if defined(TZ1XXX_BOARD_REFERENCE_A) || defined(TZ1XXX_BOARD_REFERENCE_B)
+#elif defined(TZ1XXX_BOARD_REFERENCE_A) || defined(TZ1XXX_BOARD_REFERENCE_B)
 #define TWIC_DEBUG_UART_NUMBER (TWIC_DEBUG_UART_CH_1)
-#endif
 
-#if defined(TZ1XXX_BOARD_DEVELOPER_X) || defined(TZ1XXX_BOARD_EXTERIOR_A)
+#elif defined(TZ1XXX_BOARD_DEVELOPER_X) || defined(TZ1XXX_BOARD_EXTERIOR_A)
 #define TWIC_DEBUG_UART_NUMBER (TWIC_DEBUG_UART_CH_0)
+
+#elif defined(TZ1XXX_BOARD_EXTERIOR_H)
+#define TWIC_DEBUG_UART_NUMBER (TWIC_DEBUG_UART_CH_0)
+
 #endif
 
 #else
@@ -376,6 +396,11 @@
 #undef TWIC_LECE_DCDCEN
 #undef TWIC_LECE_DCDCEN_GPIO_NUMBER
 
+#elif defined(TZ1XXX_BOARD_EXTERIOR_H)
+
+#undef TWIC_LECE_DCDCEN
+#undef TWIC_LECE_DCDCEN_GPIO_NUMBER
+
 #endif
   
 
@@ -404,6 +429,13 @@
 #define TWIC_LECE_CLK32K_SLPXOIN_CLOCK
 #define TWIC_LECE_CLK32K_SLPXOIN_OSC32K_FROM_CG_CLK32K_OUT
 #undef  TWIC_LECE_CLK32K_SLPXOIN_SIOSC32K_FROM_CG_CLK32K_OUT
+
+#elif defined(TZ1XXX_BOARD_EXTERIOR_H)
+
+#undef TWIC_LECE_CLK32K_SLPXOIN_CLOCK
+#undef TWIC_LECE_CLK32K_SLPXOIN_XTAL
+#undef TWIC_LECE_CLK32K_SLPXOIN_OSC32K_FROM_CG_CLK32K_OUT
+#undef TWIC_LECE_CLK32K_SLPXOIN_SIOSC32K_FROM_CG_CLK32K_OUT
 
 #endif
 

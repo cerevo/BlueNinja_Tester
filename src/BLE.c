@@ -242,6 +242,7 @@ BLELib_CommonCallbacks tz01_common_callbacks = {
     connectionUpdateCb,
     mtuExchangeResultCb,
     disconnectCb,
+    NULL,
     isrNewEventCb,
     isrWakeupCb
 };
@@ -275,7 +276,7 @@ int BLE_init(void)
 
     /* initialize BLELib */
     int ret;
-    BLELib_initialize(bnpp_bdaddr, BLELIB_BAUDRATE_2304, &tz01_common_callbacks, &tz01_server_callbacks, NULL);
+    BLELib_initialize(bnpp_bdaddr, BLELIB_BAUDRATE_2304, &tz01_common_callbacks, &tz01_server_callbacks, NULL, NULL);
     ret = BLELib_registerService(bnpp_service_list, 2);
     BLELib_setLowPowerMode(BLELIB_LOWPOWER_ON);
 
@@ -299,7 +300,7 @@ int BLE_run(void)
         case BLELIB_STATE_INITIALIZED:
             break;
 
-        case BLELIB_STATE_ADVERTISE_READY:
+        case BLELIB_STATE_READY:
             if (is_adv == false) {
                 ret = BLELib_startAdvertising(bnmsg_advertising_data, sizeof(bnmsg_advertising_data), bnmsg_scan_resp_data, sizeof(bnmsg_scan_resp_data));
                 is_adv = true;

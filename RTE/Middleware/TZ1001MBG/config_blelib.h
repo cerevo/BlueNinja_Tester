@@ -85,9 +85,9 @@ extern "C" {
 #error BLELIB_MAX_ADVERTISING_INTERVAL must be in range from 0x20 to 0x4000
 #endif
 //   <o> Advertising type
-//     <0=>Connectable advertising
-//     <2=>Scannable advertising
-//     <3=>Non connectable advertising
+//     <0=> Connectable advertising
+//     <2=> Scannable advertising
+//     <3=> Non connectable advertising
 #define BLELIB_ADVERTISING_TYPE_NUM (0)
 #if BLELIB_ADVERTISING_TYPE_NUM == 0
 #define BLELIB_ADVERTISING_TYPE TWIC_ADV_TYPE_IND
@@ -112,31 +112,120 @@ extern "C" {
 // </h>
 	
 	
-// <h> Connection parameter
+// <h> Connection parameter for low power on
 //   <o> minimum connection interval (n * 1.25ms) <6-3200>
-#define BLELIB_MIN_CONNECTION_INTERVAL (6)
-#if (BLELIB_MIN_CONNECTION_INTERVAL < 6) || (BLELIB_MIN_CONNECTION_INTERVAL > 3200)
-#error BLELIB_MIN_CONNECTION_INTERVAL must be in range from 6 to 3200
+#define BLELIB_MIN_CONNECTION_INTERVAL_LOWPOWER_ON (40)
+#if (BLELIB_MIN_CONNECTION_INTERVAL_LOWPOWER_ON < 6) || (BLELIB_MIN_CONNECTION_INTERVAL_LOWPOWER_ON > 3200)
+#error BLELIB_MIN_CONNECTION_INTERVAL_LOWPOWER_ON must be in range from 6 to 3200
 #endif
 //   <o> maximum connection interval (n * 1.25ms) <6-3200>
-#define BLELIB_MAX_CONNECTION_INTERVAL (9)
-#if (BLELIB_MAX_CONNECTION_INTERVAL < 6) || (BLELIB_MAX_CONNECTION_INTERVAL > 3200)
-#error BLELIB_MAX_CONNECTION_INTERVAL must be in range from 6 to 3200
+#define BLELIB_MAX_CONNECTION_INTERVAL_LOWPOWER_ON (100)
+#if (BLELIB_MAX_CONNECTION_INTERVAL_LOWPOWER_ON < 6) || (BLELIB_MAX_CONNECTION_INTERVAL_LOWPOWER_ON > 3200)
+#error BLELIB_MAX_CONNECTION_INTERVAL_LOWPOWER_ON must be in range from 6 to 3200
 #endif
 //   <o> slave latency <0-499>
-#define BLELIB_SLAVE_LATENCY (4)
-#if (BLELIB_SLAVE_LATENCY < 0) || (BLELIB_SLAVE_LATENCY > 499)
-#error BLELIB_SLAVE_LATENCY must be in range from 0 to 499
+#define BLELIB_SLAVE_LATENCY_LOWPOWER_ON (4)
+#if (BLELIB_SLAVE_LATENCY_LOWPOWER_ON < 0) || (BLELIB_SLAVE_LATENCY_LOWPOWER_ON > 499)
+#error BLELIB_SLAVE_LATENCY_LOWPOWER_ON must be in range from 0 to 499
 #endif
 //   <o> supervision timeout (n * 10ms) <10-3200>
-#define BLELIB_SUPERVISION_TIMEOUT (400)
-#if (BLELIB_SUPERVISION_TIMEOUT < 10) || (BLELIB_SUPERVISION_TIMEOUT > 3200)
-#error BLELIB_SUPERVISION_TIMEOUT must be in range from 10 to 3200
+#define BLELIB_SUPERVISION_TIMEOUT_LOWPOWER_ON (400)
+#if (BLELIB_SUPERVISION_TIMEOUT_LOWPOWER_ON < 10) || (BLELIB_SUPERVISION_TIMEOUT_LOWPOWER_ON > 3200)
+#error BLELIB_SUPERVISION_TIMEOUT_LOWPOWER_ON must be in range from 10 to 3200
 #endif
-//
+//   <o> minimum CE length (n * 0.625ms) <0x0-0xffff>
+#define BLELIB_MIN_CE_LENGTH_LOWPOWER_ON (0x20)
+#if (BLELIB_MIN_CE_LENGTH_LOWPOWER_ON < 0) || (BLELIB_MIN_CE_LENGTH_LOWPOWER_ON > 0xffff)
+#error BLELIB_MIN_CE_LENGTH_LOWPOWER_ON must be in range from 0x0000 to 0xffff
+#endif
+//   <o> maximum CE length (n * 0.625ms) <0x0-0xffff>
+#define BLELIB_MAX_CE_LENGTH_LOWPOWER_ON (0x30)
+#if (BLELIB_MAX_CE_LENGTH_LOWPOWER_ON < 0) || (BLELIB_MAX_CE_LENGTH_LOWPOWER_ON > 0xffff)
+#error BLELIB_MAX_CE_LENGTH_LOWPOWER_ON must be in range from 0x0000 to 0xffff
+#endif
 // </h>
 
+// <h> Connection parameter for low power off
+//   <o> minimum connection interval (n * 1.25ms) <6-3200>
+#define BLELIB_MIN_CONNECTION_INTERVAL_LOWPOWER_OFF (6)
+#if (BLELIB_MIN_CONNECTION_INTERVAL_LOWPOWER_OFF < 6) || (BLELIB_MIN_CONNECTION_INTERVAL_LOWPOWER_OFF > 3200)
+#error BLELIB_MIN_CONNECTION_INTERVAL_LOWPOWER_OFF must be in range from 6 to 3200
+#endif
+//   <o> maximum connection interval (n * 1.25ms) <6-3200>
+#define BLELIB_MAX_CONNECTION_INTERVAL_LOWPOWER_OFF (9)
+#if (BLELIB_MAX_CONNECTION_INTERVAL_LOWPOWER_OFF < 6) || (BLELIB_MAX_CONNECTION_INTERVAL_LOWPOWER_OFF > 3200)
+#error BLELIB_MAX_CONNECTION_INTERVAL_LOWPOWER_OFF must be in range from 6 to 3200
+#endif
+//   <o> slave latency <0-499>
+#define BLELIB_SLAVE_LATENCY_LOWPOWER_OFF (4)
+#if (BLELIB_SLAVE_LATENCY_LOWPOWER_OFF < 0) || (BLELIB_SLAVE_LATENCY_LOWPOWER_OFF > 499)
+#error BLELIB_SLAVE_LATENCY_LOWPOWER_OFF must be in range from 0 to 499
+#endif
+//   <o> supervision timeout (n * 10ms) <10-3200>
+#define BLELIB_SUPERVISION_TIMEOUT_LOWPOWER_OFF (400)
+#if (BLELIB_SUPERVISION_TIMEOUT_LOWPOWER_OFF < 10) || (BLELIB_SUPERVISION_TIMEOUT_LOWPOWER_OFF > 3200)
+#error BLELIB_SUPERVISION_TIMEOUT_LOWPOWER_OFF must be in range from 10 to 3200
+#endif
+//   <o> minimum CE length (n * 0.625ms) <0x0-0xffff>
+#define BLELIB_MIN_CE_LENGTH_LOWPOWER_OFF (0x20)
+#if (BLELIB_MIN_CE_LENGTH_LOWPOWER_OFF < 0) || (BLELIB_MIN_CE_LENGTH_LOWPOWER_OFF > 0xffff)
+#error BLELIB_MIN_CE_LENGTH_LOWPOWER_OFF must be in range from 0x0000 to 0xffff
+#endif
+//   <o> maximum CE length (n * 0.625ms) <0x0-0xffff>
+#define BLELIB_MAX_CE_LENGTH_LOWPOWER_OFF (0x30)
+#if (BLELIB_MAX_CE_LENGTH_LOWPOWER_OFF < 0) || (BLELIB_MAX_CE_LENGTH_LOWPOWER_OFF > 0xffff)
+#error BLELIB_MAX_CE_LENGTH_LOWPOWER_OFF must be in range from 0x0000 to 0xffff
+#endif
+// </h>
 
+// <h> Scan parameter
+//   <o> scan interval (n * 0.625ms) <0x4-0x4000>
+#define BLELIB_SCAN_INTERVAL	(0x2000)
+#if (BLELIB_SCAN_INTERVAL < 0x4) || (BLELIB_SCAN_INTERVAL > 0x4000)
+#error BLELIB_SCAN_INTERVAL must be in range from 0x4 to 0x4000
+#endif
+//   <o> scan window (n * 0.625ms) <0x4-0x4000>
+#define BLELIB_SCAN_WINDOW (0x2000)
+#if (BLELIB_SCAN_WINDOW < 0x4) || (BLELIB_SCAN_WINDOW > 0x4000)
+#error BLELIB_SCAN_WINDOW must be in range from 0x4 to 0x4000
+#endif
+// </h>
+
+// <h> SMP parameter
+//   <o> IO capability
+//     <0=> Display Only
+//     <1=> Display Yes No
+//     <2=> Keyboard Only
+//     <3=> No Input No Output
+//     <4=> Keyboard Display
+#define BLELIB_IO_CAPABILITY (3)
+#if (BLELIB_IO_CAPABILITY < 0) || (BLELIB_IO_CAPABILITY > 4)
+#error BLELIB_IO_CAPABILITY must be in range from 0 to 4
+#endif
+//   <q> OOB authentication data is available
+#define BLELIB_OOB_DATA_FLAG (0)
+//   <q> Bonding request
+#define BLELIB_AUTH_REQ_BONDING (1)
+//   <q> MITM protection request
+#define BLELIB_AUTH_REQ_MITM (0)
+//   <o> Maximum encode key size <7-16>
+#define BLELIB_MAX_ENCODE_KEY_SIZE (7)
+#if (BLELIB_MAX_ENCODE_KEY_SIZE < 7) || (BLELIB_MAX_ENCODE_KEY_SIZE > 16)
+#error BLELIB_MAX_ENCODE_KEY_SIZE must be in range from 7 to 16
+#endif
+//   <q> Initiator distributes enckey
+#define BLELIB_INITIATOR_DISTRIBUTES_ENCKEY (1)
+//   <q> Initiator distributes idkey
+#define BLELIB_INITIATOR_DISTRIBUTES_IDKEY (1)
+//   <q> Initiator distributes sign
+#define BLELIB_INITIATOR_DISTRIBUTES_SIGN (1)
+//   <q> Responder distributes enckey
+#define BLELIB_RESPONDER_DISTRIBUTES_ENCKEY (1)
+//   <q> Responder distributes idkey
+#define BLELIB_RESPONDER_DISTRIBUTES_IDKEY (1)
+//   <q> Responder distributes sign
+#define BLELIB_RESPONDER_DISTRIBUTES_SIGN (1)
+// </h>
 
 // <<< end of configuration section >>>
 
