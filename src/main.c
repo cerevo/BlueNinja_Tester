@@ -132,61 +132,61 @@ static bool recv_cmd(TESTER_EVT *evt, uint16_t *param)
                     *param += tmp;
                 } else {
                     //10進数文字じゃない
-                    return -2;  //Invalid parameter.
+                    return false;  //Invalid parameter.
                 }
             }
             //コマンドの判定
             switch (cmd) {
             case 'm':
                 if ((*param < 0) || ((*param > 3) && (*param != 999))) {
-                    return -2;  //Invalid parameter;
+                    return false;  //Invalid parameter;
                 }
                 *evt = EVT_CMD_M;
                 break;
             case 'g':
                 if (*param != 0) {
-                    return -2;  //Invalid parameter;
+                    return false;  //Invalid parameter;
                 }
                 *evt = EVT_CMD_G;
                 break;
             case 'a':
                 if ((*param < 0) || ((*param > 3) && (*param !=102))) {
-                    return -2;
+                    return false;
                 }
                 *evt = EVT_CMD_A;
                 break;
             case 'i':
                 if (*param != 0) {
-                    return -2;
+                    return false;
                 }
                 *evt = EVT_CMD_I;
                 break;
             case '9':
                 if (*param != 0) {
-                    return -2;
+                    return false;
                 }
                 *evt = EVT_CMD_9;
                 break;
             case 'p':
                 if (*param != 0) {
-                    return -2;
+                    return false;
                 }
                 *evt = EVT_CMD_P;
                 break;
             case 'c':
                 if (*param != 0) {
-                    return -2;
+                    return false;
                 }
                 *evt = EVT_CMD_C;
                 break;
             case 'r':
                 if (*param != 0) {
-                    return -2;
+                    return false;
                 }
                 *evt = EVT_CMD_R;
                 break;
             default:
-                return -1;  //Invalid command.
+                return false;  //Invalid command.
             }
         } else {
             //バッファに追加
