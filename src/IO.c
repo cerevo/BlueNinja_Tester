@@ -117,7 +117,7 @@ static DAT_BUF adc12_0, adc12_1, adc12_2, adc12_3;
 static DAT_BUF adc24_2;
 
 static uint8_t charger_reg[7];
-static uint8_t send_buf[80];
+static uint8_t send_buf[100];
 
 /*** ローカル関数 ***/
 static int uint32_sort(const void *a, const void *b)
@@ -251,7 +251,7 @@ void IO_i2c_pingpong(void)
     Driver_I2C0.SendData(0x48, "PING", 5, true);
     /* PONG受信 */
     Driver_I2C0.ReceiveData(0x48, pong, 5, true);
-    
+    pong[4] = '\0';
     sprintf(send_buf, "{\"cmd\":\"i000\",\"recv\":\"%s\"}\r\n", pong);
     TZ01_console_puts(send_buf);
 }
@@ -273,9 +273,8 @@ void IO_respons_gpio(void)
     Driver_GPIO.ReadPin(22, &g22);
     Driver_GPIO.ReadPin(23, &g23);
     
-    TZ01_console_puts("{\"cmd\":\"g000\",\"gpio\":{");
     sprintf(
-        send_buf, "\"7\":%d,\"8\":%d,\"9\":%d,\"16\":%d,\"17\":%d,\"18\":%d,\"19\":%d,\"20\":%d,\"21\":%d,\"22\":%d,\"23\":%d}}\r\n",
+        send_buf, "{\"cmd\":\"g000\",\"gpio\":{\"7\":%d,\"8\":%d,\"9\":%d,\"16\":%d,\"17\":%d,\"18\":%d,\"19\":%d,\"20\":%d,\"21\":%d,\"22\":%d,\"23\":%d}}\r\n",
         g7, g8, g9, g16, g17, g18, g19, g20, g21, g22, g23
     );
     TZ01_console_puts(send_buf);
@@ -340,105 +339,92 @@ void IO_respons_adc(uint8_t param)
 void IO_respons_9axis(void)
 {
     uint32_t val[5];
-    uint32_t median;
+    uint32_t gy[3], ac[3], mm[3];
     
     /* ジャイロ */
-    TZ01_console_puts("{\"cmd\":\"9000\",\"gyro\":[");
     // X
     if (get_series_buf(&gyro_x, val, 5) == 5) {
         //過去5回の計測の中央値を返す
-        median = get_median(val, 5);
+        gy[0] = get_median(val, 5);
     } else {
         //0を返す(過去5回分の計測データが揃って無い)
-        median = 0;
+        gy[0] = 0;
     }
-    sprintf(send_buf, "%d,", (int16_t)median);
-    TZ01_console_puts(send_buf);
     // Y
     if (get_series_buf(&gyro_y, val, 5) == 5) {
         //過去5回の計測の中央値を返す
-        median = get_median(val, 5);
+        gy[1] = get_median(val, 5);
     } else {
         //0を返す(過去5回分の計測データが揃って無い)
-        median = 0;
+        gy[1] = 0;
     }
-    sprintf(send_buf, "%d,", (int16_t)median);
-    TZ01_console_puts(send_buf);
     // Z
     if (get_series_buf(&gyro_z, val, 5) == 5) {
         //過去5回の計測の中央値を返す
-        median = get_median(val, 5);
+        gy[2] = get_median(val, 5);
     } else {
         //0を返す(過去5回分の計測データが揃って無い)
-        median = 0;
+        gy[2] = 0;
     }
-    sprintf(send_buf, "%d", (int16_t)median);
-    TZ01_console_puts(send_buf);
     
     /* 加速度 */
-    TZ01_console_puts("], \"accel\":[");
     // X
     if (get_series_buf(&acel_x, val, 5) == 5) {
         //過去5回の計測の中央値を返す
-        median = get_median(val, 5);
+        ac[0] = get_median(val, 5);
     } else {
         //0を返す(過去5回分の計測データが揃って無い)
-        median = 0;
+        ac[0] = 0;
     }
-    sprintf(send_buf, "%d,", (int16_t)median);
-    TZ01_console_puts(send_buf);
     // Y
     if (get_series_buf(&acel_y, val, 5) == 5) {
         //過去5回の計測の中央値を返す
-        median = get_median(val, 5);
+        ac[1] = get_median(val, 5);
     } else {
         //0を返す(過去5回分の計測データが揃って無い)
-        median = 0;
+        ac[1] = 0;
     }
-    sprintf(send_buf, "%d,", (int16_t)median);
-    TZ01_console_puts(send_buf);
     // Z
     if (get_series_buf(&acel_z, val, 5) == 5) {
         //過去5回の計測の中央値を返す
-        median = get_median(val, 5);
+        ac[2] = get_median(val, 5);
     } else {
         //0を返す(過去5回分の計測データが揃って無い)
-        median = 0;
+        ac[2] = 0;
     }
-    sprintf(send_buf, "%d", (int16_t)median);
-    TZ01_console_puts(send_buf);
     
     /* 地磁気 */
-    TZ01_console_puts("], \"magnetometer\":[");
     // X
     if (get_series_buf(&magm_x, val, 5) == 5) {
         //過去5回の計測の中央値を返す
-        median = get_median(val, 5);
+        mm[0] = get_median(val, 5);
     } else {
         //0を返す(過去5回分の計測データが揃って無い)
-        median = 0;
+        mm[0] = 0;
     }
-    sprintf(send_buf, "%d,", (int16_t)median);
-    TZ01_console_puts(send_buf);
     // Y
     if (get_series_buf(&magm_y, val, 5) == 5) {
         //過去5回の計測の中央値を返す
-        median = get_median(val, 5);
+        mm[1] = get_median(val, 5);
     } else {
         //0を返す(過去5回分の計測データが揃って無い)
-        median = 0;
+        mm[1] = 0;
     }
-    sprintf(send_buf, "%d,", (int16_t)median);
-    TZ01_console_puts(send_buf);
     // Z
     if (get_series_buf(&magm_z, val, 5) == 5) {
         //過去5回の計測の中央値を返す
-        median = get_median(val, 5);
+        mm[2] = get_median(val, 5);
     } else {
         //0を返す(過去5回分の計測データが揃って無い)
-        median = 0;
+        mm[2] = 0;
     }
-    sprintf(send_buf, "%d]}\r\n", (int16_t)median);
+
+    sprintf(send_buf,
+        "{\"cmd\":\"9000\",\"gyro\":[%d,%d,%d],\"accel\":[%d,%d,%d],\"magnetometer\":[%d,%d,%d]}\r\n", 
+        (int16_t)gy[0], (int16_t)gy[1], (int16_t)gy[2],
+        (int16_t)ac[0], (int16_t)ac[1], (int16_t)ac[2],
+        (int16_t)mm[0], (int16_t)mm[1], (int16_t)mm[2]
+    );
     TZ01_console_puts(send_buf);
 }
 
