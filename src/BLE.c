@@ -136,10 +136,13 @@ uint8_t bnmsg_advertising_data[] = {
     /* BR/EDR Not Supported (i.e. bit 37
      * of LMP Extended Feature bits Page 0) = 0x04 */
 
-    0x03, /* length of this data */
+    0x06, /* length of this data */
     0x08, /* AD type = Short local name */
     'T',  /* (T) */
     'Z',  /* (Z) */
+    '1',
+    '0',
+    '1',
 
     0x05, /* length of this data */
     0x03, /* AD type = Complete list of 16-bit UUIDs available */
