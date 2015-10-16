@@ -142,7 +142,7 @@ uint8_t bnmsg_advertising_data[] = {
     'Z',  /* (Z) */
     '1',
     '0',
-    '1',
+    '3',
 
     0x05, /* length of this data */
     0x03, /* AD type = Complete list of 16-bit UUIDs available */
